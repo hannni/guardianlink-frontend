@@ -1,26 +1,64 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import Users from './pages/Users';
+import AdminDashboard from './pages/AdminDashboard';
+import NGODashboard from './pages/NGODashboard';
+import VolunteerDashboard from './pages/VolunteerDashboard';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    return (
+        <Router>
+            <Navbar />
+            <Routes>
+                <Route path="/login" element={<Login />} />
+
+                <Route
+                    path="/dashboard"
+                    element={
+                        <ProtectedRoute>
+                            <Dashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/users"
+                    element={
+                        <ProtectedRoute role="admin">
+                            <Users />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin/dashboard"
+                    element={
+                        <ProtectedRoute role="admin">
+                            <AdminDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/ngo/dashboard"
+                    element={
+                        <ProtectedRoute role="ngo">
+                            <NGODashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/volunteer/dashboard"
+                    element={
+                        <ProtectedRoute role="volunteer">
+                            <VolunteerDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+            </Routes>
+        </Router>
+    );
+};
 
 export default App;
