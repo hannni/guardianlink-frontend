@@ -8,6 +8,9 @@ import Users from './pages/Users';
 import AdminDashboard from './pages/AdminDashboard';
 import NGODashboard from './pages/NGODashboard';
 import VolunteerDashboard from './pages/VolunteerDashboard';
+import Home from './pages/Home';
+import VolunteerRegister from './pages/VolunteerRegister';
+import NGORegister from './pages/NGORegister';
 
 const App: React.FC = () => {
     return (
@@ -24,6 +27,9 @@ const App: React.FC = () => {
                         </ProtectedRoute>
                     }
                 />
+                <Route path="/register/volunteer" element={<VolunteerRegister />} />
+                <Route path="/register/ngo" element={<NGORegister />} />
+                <Route path="/" element={<Home />} />
                 <Route
                     path="/users"
                     element={

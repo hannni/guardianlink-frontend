@@ -36,6 +36,13 @@ const Navbar: React.FC = () => {
             {role === 'ngo' && <Link to="/dashboard">Browse Volunteers</Link>}
             {role === 'volunteer' && <Link to="/dashboard">Browse NGOs</Link>}
 
+            <Link to="/register/volunteer" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                Volunteer Signup
+            </Link>
+            <Link to="/register/ngo" className="text-sm font-medium text-green-600 hover:text-green-800">
+                NGO Signup
+            </Link>
+
             <div>
                 {token ? (
                     <>
