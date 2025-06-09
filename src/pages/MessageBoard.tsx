@@ -24,18 +24,39 @@ const MessageBoard: React.FC = () => {
             .catch(err => console.error(err));
     }, []);
 
-    const handleSend = () => {
+    const handleSend = async () => {
         const token = localStorage.getItem('accessToken');
-        axios.post('http://localhost:8000/api/messages/', {
-            content: newMessage,
-            receiver: receiverUsername
-        }, {
-            headers: { Authorization: `Bearer ${token}` }
-        }).then(() => {
-            setNewMessage('');
+
+        try {
+            // Step 1: Lookup user ID by username
+            const lookupResponse = await axios.get(
+                `http://localhost:8000/api/users/lookup/?username=${receiverUsername}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            const receiverId = lookupResponse.data.id;
+
+            // Step 2: Send message using user ID
+            await axios.post('http://localhost:8000/api/messages/', {
+                receiver: receiverId,
+                content: newMessage
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            alert('Message sent!');
             setReceiverUsername('');
+            setNewMessage('');
             window.location.reload();
-        }).catch(err => console.error(err));
+
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                console.error('❌ Message failed:', err.response?.data || err.message);
+            } else {
+                console.error('❌ Unexpected error:', err);
+            }
+            alert('Failed to send message. Check username.');
+        }
     };
 
     return (
