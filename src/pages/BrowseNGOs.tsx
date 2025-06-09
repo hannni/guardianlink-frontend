@@ -40,8 +40,8 @@ const BrowseNGOs: React.FC = () => {
                 <ul>
                     {ngos.map((ngo) => (
                         <li key={ngo.id} style={{ marginBottom: '20px' }}>
-                            <strong>{ngo.user.first_name} {ngo.user.last_name}</strong> ({ngo.user.username})<br />
-                            Organization: {ngo.organization_name}<br />
+                            <strong>{ngo.user.first_name} {ngo.user.last_name}</strong>
+                            Username: {ngo.user.username}<br />                            Organization: {ngo.organization_name}<br />
                             Email: {ngo.user.email}<br />
                             POC Email: {ngo.poc_email}<br />
                             Areas of Concern: {ngo.areas_of_concern}<br />

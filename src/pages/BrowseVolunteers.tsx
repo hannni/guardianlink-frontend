@@ -39,8 +39,8 @@ const BrowseVolunteers: React.FC = () => {
                 <ul>
                     {volunteers.map((vol) => (
                         <li key={vol.id} style={{ marginBottom: '20px' }}>
-                            <strong>{vol.user.first_name} {vol.user.last_name}</strong> ({vol.user.username})<br />
-                            Email: {vol.user.email}<br />
+                            <strong>{vol.user.first_name} {vol.user.last_name}</strong>
+                            Username: {vol.user.username}<br />                            Email: {vol.user.email}<br />
                             Available Hours: {vol.available_hours}<br />
                             Background Check: {vol.criminal_check ? '✅ Passed' : '❌ Not Verified'}<br />
                             <button
