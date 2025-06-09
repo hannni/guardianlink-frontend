@@ -33,7 +33,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div>
-            <h1>Dashboard</h1>
+            <h1><p>You are Logged in now</p>  <p> Please Click your "Dashboard" Menu on the Top.</p></h1>
             <p>{message}</p>
             <button onClick={handleLogout}>Logout</button>
         </div>
