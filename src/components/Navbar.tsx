@@ -33,22 +33,27 @@ const Navbar: React.FC = () => {
 
             {token && <Link to={getDashboardPath()}>Dashboard</Link>}
             {role === 'admin' && <Link to="/users">Manage Users</Link>}
-            {role === 'ngo' && <Link to="/dashboard">Browse Volunteers</Link>}
-            {role === 'volunteer' && <Link to="/dashboard">Browse NGOs</Link>}
+            {role === 'ngo' && <Link to="/volunteers">Browse Volunteers</Link>}
+            {role === 'volunteer' && <Link to="/ngos">Browse NGOs</Link>}
 
-            <Link to="/register/volunteer" className="text-sm font-medium text-blue-600 hover:text-blue-800">
-                Volunteer Signup
-            </Link>
-            <Link to="/register/ngo" className="text-sm font-medium text-green-600 hover:text-green-800">
-                NGO Signup
-            </Link>
+            {/* Conditionally render signup links only when NOT logged in */}
+            {!token && (
+                <>
+                    <Link to="/register/volunteer" className="text-sm font-medium text-blue-600 hover:text-blue-800">
+                        Volunteer Signup
+                    </Link>
+                    <Link to="/register/ngo" className="text-sm font-medium text-green-600 hover:text-green-800">
+                        NGO Signup
+                    </Link>
+                </>
+            )}
 
             <div>
                 {token ? (
                     <>
-            <span style={{ marginRight: '10px' }}>
-              Logged in as <strong>{role?.toUpperCase()}</strong>
-            </span>
+                        <span style={{ marginRight: '10px' }}>
+                            Logged in as <strong>{role?.toUpperCase()}</strong>
+                        </span>
                         <button onClick={handleLogout}>Logout</button>
                     </>
                 ) : (

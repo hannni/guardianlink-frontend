@@ -11,6 +11,8 @@ import VolunteerDashboard from './pages/VolunteerDashboard';
 import Home from './pages/Home';
 import VolunteerRegister from './pages/VolunteerRegister';
 import NGORegister from './pages/NGORegister';
+import BrowseVolunteers from './pages/BrowseVolunteers';
+import BrowseNGOs from './pages/BrowseNGOs';
 
 const App: React.FC = () => {
     return (
@@ -30,6 +32,10 @@ const App: React.FC = () => {
                 <Route path="/register/volunteer" element={<VolunteerRegister />} />
                 <Route path="/register/ngo" element={<NGORegister />} />
                 <Route path="/" element={<Home />} />
+                <Route path="/volunteers" element={<BrowseVolunteers />} />
+                <Route path="/volunteers" element={<BrowseVolunteers />} />
+                <Route path="/ngos" element={<BrowseNGOs />} />
+                <Route path="/ngos" element={<BrowseNGOs />} />
                 <Route
                     path="/users"
                     element={
