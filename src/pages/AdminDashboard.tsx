@@ -33,21 +33,6 @@ const AdminDashboard: React.FC = () => {
         }
     };
 
-    const handleRoleChange = (userId: number, newRole: string) => {
-        axios
-            .patch(
-                `/api/users/${userId}/`,
-                { role: newRole },
-                { headers: getAuthHeaders() }
-            )
-            .then(() => {
-                setUsers(
-                    users.map((u) => (u.id === userId ? { ...u, role: newRole } : u))
-                );
-            })
-            .catch((err) => console.error("Role change failed:", err));
-    };
-
     const filteredUsers = users.filter(
         (u) =>
             u.username.toLowerCase().includes(query.toLowerCase()) ||
