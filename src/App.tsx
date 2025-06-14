@@ -15,6 +15,8 @@ import BrowseVolunteers from './pages/BrowseVolunteers';
 import BrowseNGOs from './pages/BrowseNGOs';
 import MessageBoard from './pages/MessageBoard';
 import ProfilePage from './pages/ProfilePage';
+import ForgotPassword from './pages/ForgotPassword';
+
 
 const App: React.FC = () => {
     return (
@@ -35,6 +37,7 @@ const App: React.FC = () => {
                 <Route path="/register/ngo" element={<NGORegister />} />
                 <Route path="/" element={<Home />} />
                 <Route path="/messages" element={<MessageBoard />} />
+                <Route path="/ForgotPassword" element={<ForgotPassword />} />
                 <Route path="/volunteers" element={<BrowseVolunteers />} />
                 <Route path="/ngos" element={<BrowseNGOs />} />
                 <Route

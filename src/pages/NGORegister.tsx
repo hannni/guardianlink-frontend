@@ -36,16 +36,26 @@ const NGORegister: React.FC = () => {
         formData.append('areas_of_concern', form.areas_of_concern);
 
         try {
-            await fetch('http://127.0.0.1:8000/api/register/ngo/', {
+            const response = await fetch('http://127.0.0.1:8000/api/register/ngo/', {
                 method: 'POST',
                 body: formData
             });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("❌ Backend validation failed:", errorData);
+                alert('Registration failed!');
+                return;
+            }
+
             alert('NGO registered successfully!');
+            window.location.href = '/login';
         } catch (err) {
-            console.error(err);
-            alert('Registration failed.');
+            console.error("❌ Network error:", err);
+            alert('Network error occurred.');
         }
     };
+
 
     return (
         <div style={{

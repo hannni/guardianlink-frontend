@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login } from '../services/auth';
 
 const Login: React.FC = () => {
@@ -39,6 +39,10 @@ const Login: React.FC = () => {
                 <button type="submit">Login</button>
                 {error && <p style={{ color: 'red' }}>{error}</p>}
             </form>
+
+            <div style={{ marginTop: '10px' }}>
+                <Link to="/ForgotPassword">Forgot Password?</Link>
+            </div>
         </div>
     );
 };

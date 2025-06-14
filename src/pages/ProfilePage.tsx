@@ -12,6 +12,7 @@ const ProfilePage: React.FC = () => {
         organization_name: '',
         new_password: '',
         confirm_password: '',
+        resume: null,
     });
 
     const role = localStorage.getItem('userRole');
@@ -22,9 +23,9 @@ const ProfilePage: React.FC = () => {
                 const data = res.data;
                 setProfile(data);
                 setForm({
-                    first_name: data.user?.first_name || '',
-                    last_name: data.user?.last_name || '',
-                    email: data.user?.email || '',
+                    first_name: data.first_name || data.user?.first_name || '',
+                    last_name: data.last_name || data.user?.last_name || '',
+                    email: data.email || data.user?.email || '',
                     public_email: data.poc_email || data.contact_email || '',
                     organization_name: data.organization_name || '',
                     new_password: '',
@@ -33,6 +34,7 @@ const ProfilePage: React.FC = () => {
             })
             .catch(err => console.error("Profile load error", err));
     }, []);
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -55,14 +57,42 @@ const ProfilePage: React.FC = () => {
             payload.contact_email = form.public_email;
         }
 
+        console.log("PATCH Payload:", payload);
+
         try {
-            await axios.patch('http://127.0.0.1:8000/api/profile/update/', payload, { headers: getAuthHeaders() });
+            await axios.patch('http://127.0.0.1:8000/api/profile/update/', payload, {
+                headers: getAuthHeaders(),
+            });
+
             alert('Profile updated successfully');
-        } catch (err) {
-            console.error(err);
-            alert('Update failed');
+
+            // Reload profile and form state
+            const refreshed = await axios.get('http://127.0.0.1:8000/api/profile/', {
+                headers: getAuthHeaders(),
+            });
+
+            setProfile(refreshed.data);
+            setForm({
+                first_name: refreshed.data.user?.first_name ?? '',
+                last_name: refreshed.data.user?.last_name ?? '',
+                email: refreshed.data.user?.email ?? '',
+                public_email: refreshed.data.poc_email ?? refreshed.data.contact_email ?? '',
+                organization_name: refreshed.data.organization_name ?? '',
+                new_password: '',
+                confirm_password: '',
+            });
+
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                console.error("Update failed:", err.response?.data || err.message);
+                alert('Update failed: ' + (err.response?.data?.detail || err.message));
+            } else {
+                console.error("Unexpected error:", err);
+                alert('An unexpected error occurred.');
+            }
         }
     };
+
 
     const handleChangePassword = async () => {
         if (!form.new_password || !form.confirm_password) {
@@ -123,6 +153,19 @@ const ProfilePage: React.FC = () => {
                 <input name="email" value={form.email} onChange={handleChange} style={{ width: '100%' }} />
             </label><br /><br />
 
+            {role === 'admin' && (
+                <>
+                    <label>Business Email (public)<br />
+                        <input
+                            name="email"
+                            value={form.email}
+                            onChange={handleChange}
+                            style={{ width: '100%' }}
+                        />
+                    </label><br /><br />
+                </>
+            )}
+
             {role === 'ngo' && (
                 <>
                     <label>Organization Name<br />
@@ -135,10 +178,95 @@ const ProfilePage: React.FC = () => {
             )}
 
             {role === 'volunteer' && (
-                <label>Contact Email (public)<br />
-                    <input name="public_email" value={form.public_email} onChange={handleChange} style={{ width: '100%' }} />
-                </label>
-            )}<br /><br />
+                <>
+                    <label>Contact Email (public)<br />
+                        <input
+                            name="public_email"
+                            value={form.public_email}
+                            onChange={handleChange}
+                            style={{ width: '100%' }}
+                        />
+                    </label><br /><br />
+
+                    {profile.resume && (
+                        <div style={{ marginBottom: '1rem' }}>
+                            <button
+                                onClick={async () => {
+                                    try {
+                                        const res = await fetch(`http://127.0.0.1:8000${profile.resume}`, {
+                                            method: "HEAD"
+                                        });
+
+                                        if (res.ok) {
+                                            window.open(`http://127.0.0.1:8000${profile.resume}`, '_blank');
+                                        } else {
+                                            alert("Resume file not available on server.");
+                                        }
+                                    } catch (error) {
+                                        alert("Unable to check or open resume.");
+                                        console.error("Resume fetch error:", error);
+                                    }
+                                }}
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'blue',
+                                    textDecoration: 'underline',
+                                    cursor: 'pointer',
+                                    padding: 0
+                                }}
+                            >
+                                Download Current Resume
+                            </button>
+                        </div>
+                    )}
+
+
+                    <div style={{ marginBottom: '1rem' }}>
+                        <label>Upload New Resume:<br />
+                            <input
+                                type="file"
+                                name="resume"
+                                onChange={(e) => {
+                                    setForm({ ...form, resume: e.target.files?.[0] || null });
+                                }}
+                            />
+                        </label>
+                    </div>
+
+                    <div style={{ textAlign: 'left', marginBottom: '2rem' }}>
+                        <button
+                            onClick={async () => {
+                                if (!form.resume) {
+                                    alert("Please choose a file first.");
+                                    return;
+                                }
+
+                                const data = new FormData();
+                                data.append("resume", form.resume);
+
+                                try {
+                                    await axios.patch('http://127.0.0.1:8000/api/profile/upload_resume/', data, {
+                                        headers: {
+                                            ...getAuthHeaders(),
+                                            "Content-Type": "multipart/form-data"
+                                        }
+                                    });
+                                    alert("Resume uploaded successfully");
+                                    window.location.reload(); // To update the download link
+                                } catch (err) {
+                                    console.error(err);
+                                    alert("Resume upload failed");
+                                }
+                            }}
+                        >
+                            Upload Resume
+                        </button>
+                    </div>
+                </>
+            )}
+
+
 
             <div style={{ textAlign: 'left', marginBottom: '2rem' }}>
                 <button onClick={handleUpdate}>Update Profile</button>

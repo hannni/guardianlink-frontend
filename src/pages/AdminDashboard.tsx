@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { getAuthHeaders } from "../services/auth";
 import "../components/Navbar.css"; // optional if you want styling
@@ -7,6 +8,8 @@ const AdminDashboard: React.FC = () => {
     const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState("");
+
+    const navigate = useNavigate(); // place this inside the component function
 
     useEffect(() => {
         axios
@@ -44,6 +47,37 @@ const AdminDashboard: React.FC = () => {
             <h1>Admin Dashboard</h1>
             <p>Manage platform users: view, delete, or change their role.</p>
 
+            {/* NEW BUTTONS FOR CREATING USERS */}
+            <div style={{ margin: "1rem 0" }}>
+                <button
+                    onClick={() => navigate("/register/ngo")}
+                    style={{
+                        marginRight: "1rem",
+                        backgroundColor: "#2563eb",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                    }}
+                >
+                    ➕ Create New NGO
+                </button>
+                <button
+                    onClick={() => navigate("/register/volunteer")}
+                    style={{
+                        backgroundColor: "#10b981",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                    }}
+                >
+                    ➕ Create New Volunteer
+                </button>
+            </div>
+
             <input
                 type="text"
                 placeholder="Search by name or email"
@@ -69,9 +103,7 @@ const AdminDashboard: React.FC = () => {
                         <tr key={user.id} style={{ borderBottom: "1px solid #eee" }}>
                             <td style={{ padding: "0.5rem" }}>{user.username}</td>
                             <td style={{ padding: "0.5rem" }}>{user.email}</td>
-                            <td style={{ padding: "0.5rem", textTransform: "capitalize" }}>
-                                {user.role}
-                            </td>
+                            <td style={{ padding: "0.5rem", textTransform: "capitalize" }}>{user.role}</td>
                             <td style={{ padding: "0.5rem" }}>
                                 {user.role !== "admin" ? (
                                     <button
