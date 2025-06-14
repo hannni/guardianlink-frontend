@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
 
     return (
         <div className="navbar">
-            <Link to="/">Home</Link>
+            <Link to="/">About</Link>
 
             {token && <Link to={getDashboardPath()}>Dashboard</Link>}
             {token && <Link to="/messages">Messages</Link>}
