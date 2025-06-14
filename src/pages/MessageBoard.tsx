@@ -51,9 +51,9 @@ const MessageBoard: React.FC = () => {
 
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
-                console.error('❌ Message failed:', err.response?.data || err.message);
+                console.error('Message failed:', err.response?.data || err.message);
             } else {
-                console.error('❌ Unexpected error:', err);
+                console.error('Unexpected error:', err);
             }
             alert('Failed to send message. Check username.');
         }

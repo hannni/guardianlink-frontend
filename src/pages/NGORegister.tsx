@@ -43,7 +43,7 @@ const NGORegister: React.FC = () => {
 
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error("❌ Backend validation failed:", errorData);
+                console.error("Backend validation failed:", errorData);
                 alert('Registration failed!');
                 return;
             }
@@ -51,7 +51,7 @@ const NGORegister: React.FC = () => {
             alert('NGO registered successfully!');
             window.location.href = '/login';
         } catch (err) {
-            console.error("❌ Network error:", err);
+            console.error("Network error:", err);
             alert('Network error occurred.');
         }
     };

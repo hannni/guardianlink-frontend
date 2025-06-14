@@ -9,9 +9,13 @@ const AdminDashboard: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState("");
 
-    const navigate = useNavigate(); // place this inside the component function
+    const navigate = useNavigate();
 
     useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    const fetchUsers = () => {
         axios
             .get("http://127.0.0.1:8000/api/users/", { headers: getAuthHeaders() })
             .then((res) => {
@@ -23,7 +27,7 @@ const AdminDashboard: React.FC = () => {
                 console.error("Failed to fetch users:", err);
                 setLoading(false);
             });
-    }, []);
+    };
 
     const handleDelete = (userId: number) => {
         if (window.confirm("Are you sure you want to delete this user?")) {
@@ -33,6 +37,39 @@ const AdminDashboard: React.FC = () => {
                     setUsers(users.filter((user) => user.id !== userId));
                 })
                 .catch((err) => console.error("Delete failed:", err));
+        }
+    };
+
+    const handleAssignRole = async (userId: number) => {
+        const newRole = prompt("Enter new role (admin, ngo, volunteer):")?.toLowerCase();
+        if (!newRole || !["admin", "ngo", "volunteer"].includes(newRole)) {
+            alert("Invalid role.");
+            return;
+        }
+
+        try {
+            await axios.post(
+                `http://127.0.0.1:8000/api/users/${userId}/assign-role/`,
+                { role: newRole },
+                { headers: getAuthHeaders() }
+            );
+            alert(`Role updated to ${newRole}`);
+            fetchUsers();
+        } catch (err) {
+            console.error("Role assignment failed:", err);
+        }
+    };
+
+    const handleResetPassword = async (userId: number) => {
+        try {
+            await axios.post(
+                `http://127.0.0.1:8000/api/users/${userId}/reset-password/`,
+                {},
+                { headers: getAuthHeaders() }
+            );
+            alert("Password has been reset to: resetedpassword");
+        } catch (err) {
+            console.error("Password reset failed:", err);
         }
     };
 
@@ -47,7 +84,7 @@ const AdminDashboard: React.FC = () => {
             <h1>Admin Dashboard</h1>
             <p>Manage platform users: view, delete, or change their role.</p>
 
-            {/* NEW BUTTONS FOR CREATING USERS */}
+            {/* Create Buttons */}
             <div style={{ margin: "1rem 0" }}>
                 <button
                     onClick={() => navigate("/register/ngo")}
@@ -61,7 +98,7 @@ const AdminDashboard: React.FC = () => {
                         cursor: "pointer",
                     }}
                 >
-                    ➕ Create New NGO
+                    Create New NGO
                 </button>
                 <button
                     onClick={() => navigate("/register/volunteer")}
@@ -74,10 +111,11 @@ const AdminDashboard: React.FC = () => {
                         cursor: "pointer",
                     }}
                 >
-                    ➕ Create New Volunteer
+                    Create New Volunteer
                 </button>
             </div>
 
+            {/* Search */}
             <input
                 type="text"
                 placeholder="Search by name or email"
@@ -86,6 +124,7 @@ const AdminDashboard: React.FC = () => {
                 style={{ padding: "0.5rem", margin: "1rem 0", width: "100%" }}
             />
 
+            {/* User Table */}
             {loading ? (
                 <p>Loading users...</p>
             ) : (
@@ -105,28 +144,59 @@ const AdminDashboard: React.FC = () => {
                             <td style={{ padding: "0.5rem" }}>{user.email}</td>
                             <td style={{ padding: "0.5rem", textTransform: "capitalize" }}>{user.role}</td>
                             <td style={{ padding: "0.5rem" }}>
-                                {user.role !== "admin" ? (
-                                    <button
-                                        onClick={() => handleDelete(user.id)}
-                                        style={{
-                                            backgroundColor: "#dc2626",
-                                            color: "white",
-                                            border: "none",
-                                            padding: "0.4rem 0.8rem",
-                                            cursor: "pointer",
-                                            borderRadius: "4px",
-                                        }}
-                                    >
-                                        Delete
-                                    </button>
-                                ) : (
+                                {user.is_superuser ? (
                                     <span style={{ color: "gray", fontStyle: "italic" }}>Protected</span>
+                                ) : (
+                                    <>
+                                        <button
+                                            onClick={() => handleAssignRole(user.id)}
+                                            style={{
+                                                marginRight: "0.5rem",
+                                                backgroundColor: "#f59e0b",
+                                                color: "white",
+                                                border: "none",
+                                                padding: "0.4rem 0.8rem",
+                                                cursor: "pointer",
+                                                borderRadius: "4px",
+                                            }}
+                                        >
+                                            Assign Role
+                                        </button>
+                                        <button
+                                            onClick={() => handleResetPassword(user.id)}
+                                            style={{
+                                                marginRight: "0.5rem",
+                                                backgroundColor: "#0ea5e9",
+                                                color: "white",
+                                                border: "none",
+                                                padding: "0.4rem 0.8rem",
+                                                cursor: "pointer",
+                                                borderRadius: "4px",
+                                            }}
+                                        >
+                                            Reset Password
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(user.id)}
+                                            style={{
+                                                backgroundColor: "#dc2626",
+                                                color: "white",
+                                                border: "none",
+                                                padding: "0.4rem 0.8rem",
+                                                cursor: "pointer",
+                                                borderRadius: "4px",
+                                            }}
+                                        >
+                                            Delete
+                                        </button>
+                                    </>
                                 )}
                             </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
+
             )}
         </div>
     );
