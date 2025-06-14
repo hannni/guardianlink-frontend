@@ -33,11 +33,12 @@ const Navbar: React.FC = () => {
 
             {token && <Link to={getDashboardPath()}>Dashboard</Link>}
             {token && <Link to="/messages">Messages</Link>}
+            {token && <Link to="/profile">Profile</Link>} {/* ✅ NEW LINE */}
+
             {role === 'admin' && <Link to="/users">Browse All Users</Link>}
             {role === 'ngo' && <Link to="/volunteers">Browse Volunteers</Link>}
             {role === 'volunteer' && <Link to="/ngos">Browse NGOs</Link>}
 
-            {/* Conditionally render signup links only when NOT logged in */}
             {!token && (
                 <>
                     <Link to="/register/volunteer" className="text-sm font-medium text-blue-600 hover:text-blue-800">

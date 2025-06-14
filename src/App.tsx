@@ -14,6 +14,7 @@ import NGORegister from './pages/NGORegister';
 import BrowseVolunteers from './pages/BrowseVolunteers';
 import BrowseNGOs from './pages/BrowseNGOs';
 import MessageBoard from './pages/MessageBoard';
+import ProfilePage from './pages/ProfilePage';
 
 const App: React.FC = () => {
     return (
@@ -35,8 +36,6 @@ const App: React.FC = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/messages" element={<MessageBoard />} />
                 <Route path="/volunteers" element={<BrowseVolunteers />} />
-                <Route path="/volunteers" element={<BrowseVolunteers />} />
-                <Route path="/ngos" element={<BrowseNGOs />} />
                 <Route path="/ngos" element={<BrowseNGOs />} />
                 <Route
                     path="/users"
@@ -54,6 +53,7 @@ const App: React.FC = () => {
                         </ProtectedRoute>
                     }
                 />
+
                 <Route
                     path="/ngo/dashboard"
                     element={
@@ -67,6 +67,14 @@ const App: React.FC = () => {
                     element={
                         <ProtectedRoute role="volunteer">
                             <VolunteerDashboard />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedRoute>
+                            <ProfilePage />
                         </ProtectedRoute>
                     }
                 />
