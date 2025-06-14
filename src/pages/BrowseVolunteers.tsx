@@ -39,16 +39,20 @@ const BrowseVolunteers: React.FC = () => {
                 <ul>
                     {volunteers.map((vol) => (
                         <li key={vol.id} style={{ marginBottom: '20px' }}>
-                            <strong>{vol.user.first_name} {vol.user.last_name}</strong>
-                            Username: {vol.user.username}<br />                            Email: {vol.user.email}<br />
+                            <div>
+                                <strong>First Name:</strong> {vol.user.first_name}<br />
+                                <strong>Last Name:</strong> {vol.user.last_name}
+                            </div>
+                            Username (for message): {vol.user.username}<br />
+                            Email: {vol.user.email}<br />
                             Available Hours: {vol.available_hours}<br />
-                            Background Check: {vol.criminal_check ? '✅ Passed' : '❌ Not Verified'}<br />
+                            Criminal Background Check: {vol.criminal_check ? 'Verified (Passed)' : 'Not Verified'}<br />
                             <button
                                 onClick={() =>
                                     window.location.href = `mailto:${vol.user.email}?subject=Cybersecurity Support Needed&body=Hello ${vol.user.first_name},`
                                 }
                             >
-                                Contact
+                                Send Email
                             </button>
                         </li>
                     ))}

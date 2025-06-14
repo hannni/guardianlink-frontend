@@ -103,7 +103,7 @@ const ProfilePage: React.FC = () => {
     return (
         <div style={{ maxWidth: '800px', margin: 'auto', padding: '2rem' }}>
             <h2>My Profile</h2>
-            <p>If you have a single name, enter it in the Last Name field and XXX in the First Name.</p>
+            <p>Your user information</p>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
                 <div style={{ flex: '1 1 45%' }}>
@@ -119,7 +119,7 @@ const ProfilePage: React.FC = () => {
                 </div>
             </div>
 
-            <label>Email (Login Email)<br />
+            <label>Email (Main Email)<br />
                 <input name="email" value={form.email} onChange={handleChange} style={{ width: '100%' }} />
             </label><br /><br />
 
@@ -128,14 +128,14 @@ const ProfilePage: React.FC = () => {
                     <label>Organization Name<br />
                         <input name="organization_name" value={form.organization_name} onChange={handleChange} style={{ width: '100%' }} />
                     </label><br /><br />
-                    <label>Public Contact Email<br />
+                    <label>Contact Email (public)<br />
                         <input name="public_email" value={form.public_email} onChange={handleChange} style={{ width: '100%' }} />
                     </label><br /><br />
                 </>
             )}
 
             {role === 'volunteer' && (
-                <label>Public Contact Email<br />
+                <label>Contact Email (public)<br />
                     <input name="public_email" value={form.public_email} onChange={handleChange} style={{ width: '100%' }} />
                 </label>
             )}<br /><br />

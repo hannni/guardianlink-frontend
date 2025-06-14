@@ -40,9 +40,11 @@ const BrowseNGOs: React.FC = () => {
                 <ul>
                     {ngos.map((ngo) => (
                         <li key={ngo.id} style={{ marginBottom: '20px' }}>
-                            <strong>{ngo.user.first_name} {ngo.user.last_name}</strong>
-                            Username: {ngo.user.username}<br />                            Organization: {ngo.organization_name}<br />
-                            Email: {ngo.user.email}<br />
+                            <div>
+                                <strong>First Name:</strong> {ngo.user.first_name}<br />
+                                <strong>Last Name:</strong> {ngo.user.last_name}
+                            </div>
+                            Username (for message): {ngo.user.username}<br />                            Organization: {ngo.organization_name}<br />
                             POC Email: {ngo.poc_email}<br />
                             Areas of Concern: {ngo.areas_of_concern}<br />
                             <button
@@ -50,7 +52,7 @@ const BrowseNGOs: React.FC = () => {
                                     window.location.href = `mailto:${ngo.user.email}?subject=Cybersecurity Help&body=Hello ${ngo.user.first_name},`
                                 }
                             >
-                                Contact
+                                Send Email
                             </button>
                         </li>
                     ))}

@@ -32,12 +32,13 @@ const Navbar: React.FC = () => {
             <Link to="/">About</Link>
 
             {token && <Link to={getDashboardPath()}>Dashboard</Link>}
+            {token && <Link to="/profile">Profile</Link>}
             {token && <Link to="/messages">Messages</Link>}
-            {token && <Link to="/profile">Profile</Link>} {/* ✅ NEW LINE */}
 
-            {role === 'admin' && <Link to="/users">Browse All Users</Link>}
-            {role === 'ngo' && <Link to="/volunteers">Browse Volunteers</Link>}
-            {role === 'volunteer' && <Link to="/ngos">Browse NGOs</Link>}
+
+            {role === 'admin' && <Link to="/users">All Users List</Link>}
+            {role === 'ngo' && <Link to="/volunteers">All Volunteers List</Link>}
+            {role === 'volunteer' && <Link to="/ngos">All NGOs List</Link>}
 
             {!token && (
                 <>
