@@ -17,6 +17,7 @@ import MessageBoard from './pages/MessageBoard';
 import ProfilePage from './pages/ProfilePage';
 import ForgotPassword from './pages/ForgotPassword';
 import BrowseAllUsers from './pages/BrowseAllUsers';
+import VolunteerVerification from "./pages/VolunteerVerification";
 
 const App: React.FC = () => {
     return (
@@ -24,7 +25,7 @@ const App: React.FC = () => {
             <Navbar />
             <Routes>
                 <Route path="/login" element={<Login />} />
-
+                <Route path="/admin/volunteer-verification" element={<VolunteerVerification />} />
                 <Route
                     path="/dashboard"
                     element={

@@ -36,7 +36,12 @@ const Navbar: React.FC = () => {
             {token && <Link to="/messages">Messages</Link>}
 
 
-            {role === 'admin' && <Link to="/users">All Users List</Link>}
+            {role === 'admin' && (
+                <>
+                    <Link to="/admin/volunteer-verification">Volunteer Verification</Link>
+                    <Link to="/users">All Users List</Link>
+                </>
+            )}
             {role === 'ngo' && <Link to="/volunteers">All Volunteers List</Link>}
             {role === 'volunteer' && <Link to="/ngos">All NGOs List</Link>}
 
