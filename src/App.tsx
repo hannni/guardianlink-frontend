@@ -16,7 +16,7 @@ import BrowseNGOs from './pages/BrowseNGOs';
 import MessageBoard from './pages/MessageBoard';
 import ProfilePage from './pages/ProfilePage';
 import ForgotPassword from './pages/ForgotPassword';
-
+import BrowseAllUsers from './pages/BrowseAllUsers';
 
 const App: React.FC = () => {
     return (
@@ -45,6 +45,14 @@ const App: React.FC = () => {
                     element={
                         <ProtectedRoute role="admin">
                             <Users />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/users"
+                    element={
+                        <ProtectedRoute role="admin">
+                            <BrowseAllUsers />
                         </ProtectedRoute>
                     }
                 />
