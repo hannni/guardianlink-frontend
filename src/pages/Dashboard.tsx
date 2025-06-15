@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { getAuthHeaders } from '../services/auth';
-import { login } from '../services/auth';
 import { logout } from '../services/auth';
 import { useNavigate } from 'react-router-dom';
 
