@@ -85,11 +85,24 @@ const AdminDashboard: React.FC = () => {
             <p>Manage platform users: view, delete, or change their role.</p>
 
             {/* Create Buttons */}
-            <div style={{ margin: "1rem 0" }}>
+            <div style={{ margin: "1rem 0", display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+                <button
+                    onClick={() => window.location.href = "http://127.0.0.1:8000/admin"}
+                    style={{
+                        backgroundColor: "#4b5563",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                    }}
+                >
+                    Open Django Admin (Backend)
+                </button>
+
                 <button
                     onClick={() => navigate("/register/ngo")}
                     style={{
-                        marginRight: "1rem",
                         backgroundColor: "#2563eb",
                         color: "white",
                         border: "none",
@@ -100,6 +113,7 @@ const AdminDashboard: React.FC = () => {
                 >
                     Create New NGO
                 </button>
+
                 <button
                     onClick={() => navigate("/register/volunteer")}
                     style={{

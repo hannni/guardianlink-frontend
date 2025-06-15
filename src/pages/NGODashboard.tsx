@@ -2,8 +2,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getAuthHeaders } from "../services/auth";
 
+interface Volunteer {
+    id: number;
+    user: {
+        username: string;
+    };
+    contact_email: string;
+    available_hours: number;
+    resume: string | null;
+}
+
 const NGODashboard: React.FC = () => {
-    const [volunteers, setVolunteers] = useState<any[]>([]);
+    const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
     const [loading, setLoading] = useState(true);
     const [query, setQuery] = useState("");
 
@@ -60,7 +70,7 @@ const NGODashboard: React.FC = () => {
                             <td style={{ padding: "0.5rem" }}>{v.contact_email}</td>
                             <td style={{ padding: "0.5rem" }}>{v.available_hours}</td>
                             <td style={{ padding: "0.5rem" }}>
-                                {v.resume ? (
+                                {v.resume && v.resume !== "null" ? (
                                     <a
                                         href={`http://127.0.0.1:8000${v.resume}`}
                                         target="_blank"
@@ -70,7 +80,7 @@ const NGODashboard: React.FC = () => {
                                         View Resume
                                     </a>
                                 ) : (
-                                    <span style={{ color: "gray" }}>No resume</span>
+                                    <span style={{ color: "gray", fontStyle: "italic" }}>No Resume</span>
                                 )}
                             </td>
                         </tr>
