@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-interface User {
+interface UserBase {
+    id: number;
     username: string;
+    email: string;
     first_name: string;
     last_name: string;
-    email: string;
+}
+
+interface UserExtended extends UserBase {
+    role: string;
+    is_staff: boolean;
+    is_superuser: boolean;
 }
 
 interface Volunteer {
     id: number;
-    user: User;
+    user: UserBase | UserExtended;
     available_hours: number;
     criminal_check: boolean;
 }
