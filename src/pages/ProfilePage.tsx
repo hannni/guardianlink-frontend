@@ -28,6 +28,8 @@ const ProfilePage: React.FC = () => {
                     email: data.email || data.user?.email || '',
                     public_email: data.poc_email || data.contact_email || '',
                     organization_name: data.organization_name || '',
+                    criminal_check: data.criminal_check || false,
+                    is_criminal_check_verified: data.is_criminal_check_verified || false,
                     new_password: '',
                     confirm_password: '',
                 });
@@ -37,8 +39,11 @@ const ProfilePage: React.FC = () => {
 
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setForm({ ...form, [name]: value });
+        const { name, type, value, checked } = e.target;
+        setForm({
+            ...form,
+            [name]: type === 'checkbox' ? checked : value,
+        });
     };
 
     const handleUpdate = async () => {
@@ -55,6 +60,8 @@ const ProfilePage: React.FC = () => {
 
         if (role === 'volunteer') {
             payload.contact_email = form.public_email;
+            payload.contact_email = form.public_email;
+            payload.criminal_check = form.criminal_check;
         }
 
         console.log("PATCH Payload:", payload);
@@ -262,6 +269,28 @@ const ProfilePage: React.FC = () => {
                         >
                             Upload Resume
                         </button>
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="criminal_check"
+                                    checked={form.criminal_check}
+                                    onChange={handleChange}
+                                />
+                                {' '}I confirm I passed a criminal background check
+                            </label>
+                        </div>
+
+                        <div style={{ marginBottom: '1rem' }}>
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    checked={form.is_criminal_check_verified}
+                                    disabled
+                                />
+                                {' '}Verified by Admin
+                            </label>
+                        </div>
                     </div>
                 </>
             )}

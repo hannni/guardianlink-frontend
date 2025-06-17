@@ -7,8 +7,8 @@ const VolunteerRegister: React.FC = () => {
         password: '',
         first_name: '',
         last_name: '',
-        user_email: '',           // Login email (user.email)
-        contact_email: '',        // Volunteer profile contact email
+        user_email: '',
+        contact_email: '',
         available_hours: '',
         criminal_check: false,
         resume: null as File | null,
@@ -33,18 +33,20 @@ const VolunteerRegister: React.FC = () => {
         e.preventDefault();
         const data = new FormData();
 
-        // Nested user fields
+        // User fields
         data.append('user.username', form.username);
         data.append('user.password', form.password);
         data.append('user.first_name', form.first_name);
         data.append('user.last_name', form.last_name);
-        data.append('user.email', form.user_email);  // login
+        data.append('user.email', form.user_email);
         data.append('user.role', 'volunteer');
 
         // Volunteer profile fields
-        data.append('contact_email', form.contact_email);  // profile
+        data.append('contact_email', form.contact_email);
         data.append('available_hours', form.available_hours);
         data.append('criminal_check', form.criminal_check.toString());
+
+        // Optional resume file
         if (form.resume) {
             data.append('resume', form.resume);
         }
@@ -56,6 +58,7 @@ const VolunteerRegister: React.FC = () => {
                 }
             });
             alert('Volunteer registered successfully!');
+            window.location.href = '/login';
         } catch (err) {
             console.error(err);
             alert('Registration failed.');
@@ -80,11 +83,11 @@ const VolunteerRegister: React.FC = () => {
             }}>
                 <h2 style={{ textAlign: 'center' }}><b>Volunteer Registration</b></h2>
 
-                <label>Username (Login ID):<br />
+                <label>Username:<br />
                     <input name="username" onChange={handleChange} style={{ width: '100%' }} />
                 </label><br /><br />
 
-                <label>Password (Login Password):<br />
+                <label>Password:<br />
                     <input type="password" name="password" onChange={handleChange} style={{ width: '100%' }} />
                 </label><br /><br />
 
@@ -100,15 +103,15 @@ const VolunteerRegister: React.FC = () => {
                     <input type="email" name="user_email" onChange={handleChange} style={{ width: '100%' }} />
                 </label><br /><br />
 
-                <label>Contact Email Address (public):<br />
+                <label>Contact Email (public):<br />
                     <input type="email" name="contact_email" onChange={handleChange} style={{ width: '100%' }} />
                 </label><br /><br />
 
-                <label>Available Volunteer Hours per Week:<br />
-                    <input name="available_hours" type="number" onChange={handleChange} style={{ width: '100%' }} />
+                <label>Available Hours:<br />
+                    <input type="number" name="available_hours" onChange={handleChange} style={{ width: '100%' }} />
                 </label><br /><br />
 
-                <label>Resume:<br />
+                <label>Resume (optional):<br />
                     <input type="file" name="resume" onChange={handleFileChange} style={{ width: '100%' }} />
                 </label><br /><br />
 

@@ -20,25 +20,28 @@ const NGORegister: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const formData = new FormData();
 
-        // Nested user fields
-        formData.append('user.username', form.username);
-        formData.append('user.password', form.password);
-        formData.append('user.first_name', form.first_name);
-        formData.append('user.last_name', form.last_name);
-        formData.append('user.email', form.user_email);     // login email
-        formData.append('user.role', 'ngo');
-
-        // OrganizationProfile fields
-        formData.append('organization_name', form.organization_name);
-        formData.append('poc_email', form.poc_email);       // contact email
-        formData.append('areas_of_concern', form.areas_of_concern);
+        const payload = {
+            user: {
+                username: form.username,
+                password: form.password,
+                first_name: form.first_name,
+                last_name: form.last_name,
+                email: form.user_email,
+                role: 'ngo'
+            },
+            organization_name: form.organization_name,
+            poc_email: form.poc_email,
+            areas_of_concern: form.areas_of_concern
+        };
 
         try {
             const response = await fetch('http://127.0.0.1:8000/api/register/ngo/', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
             });
 
             if (!response.ok) {
